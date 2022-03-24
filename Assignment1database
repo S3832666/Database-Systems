@@ -1,0 +1,86 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Date;
+
+public class dbload {
+    public static void main(String[] args) throws Exception {
+        List<Record> records = readRecordsFromCSV("artist.csv");
+
+        // print everything read from the CSV file
+        for (Record b : records) {
+            System.out.println(b);
+        }
+    }
+
+
+
+    private static List<Record> readRecordsFromCSV(String fileName) {
+        List<Record> records = new ArrayList<>();
+        Path pathToFile = Paths.get(fileName);
+
+        // instance of bufferedReader
+        try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
+
+            // read the first line form the text file
+            String line = br.readLine();
+
+            // loop until all lines are read
+            while (line != null) {
+                // use sprint.split to load a string array with the values
+                // from each line of the file , using a comma as a delimiter
+
+                String[] attributes = line.split(",");
+                Record record = createRecord(attributes);
+
+                // adding book into ArrayList
+                records.add(record);
+
+                // read next line before looping
+                // if end of file reached, line would be null
+                line = br.readLine();
+            }
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        return records;
+
+    }
+
+    private static Record createRecord(String[] metadata) {
+        String personName = metadata[0];
+        String birthDate = metadata[1];
+        String birthPlace = metadata[2];
+        String deathdate = metadata[3];
+        String field = metadata[4];
+        String genre = metadata[5];
+        String instrument = metadata[6];
+        String nationality = metadata[7];
+        String thumbnail = metadata[8];
+        String wikiPageID = metadata[9];
+        String description = metadata[10];
+
+    }
+
+class Record{
+    private String personName; 
+    private Date birthDate; 
+    private String birthPlace; 
+    private Date deathDate; 
+    private String field; 
+    private String genre; 
+    private String instrument; 
+    private String nationality; 
+    private String thumbnail; 
+    private int wikiPageID; 
+    private String description; 
+
+    }
+}
